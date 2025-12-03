@@ -1,0 +1,38 @@
+name: 飞书多维表格数据处理
+on:
+  # 触发方式：Repository Dispatch（通过GitHub API触发）
+  repository_dispatch:
+    types: [feishu_bitable_process]  # 自定义事件类型，飞书请求需匹配
+
+jobs:
+  process-feishu-data:
+    runs-on: ubuntu-latest
+    env:
+      # 从GitHub Secrets读取飞书应用密钥（需提前在仓库设置）
+      FEISHU_APP_ID: ${{ secrets.FEISHU_APP_ID }}
+      FEISHU_APP_SECRET: ${{ secrets.FEISHU_APP_SECRET }}
+      # 从触发请求的payload中读取动态参数
+      DWBG_TOKEN: ${{ github.event.client_payload.DWBG_TOKEN }}
+      DWBG_TABLE_ID: ${{ github.event.client_payload.DWBG_TABLE_ID }}
+      ROW_ID: ${{ github.event.client_payload.ROW_ID }}
+
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 设置Python环境
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.9'  # 适配依赖版本，建议3.8+
+
+      - name: 安装依赖包
+        run: |
+          python -m pip install --upgrade pip
+          # 安装所有必要依赖
+          pip install lark-oapi requests pyexcel pandas xlrd openpyxl
+
+      - name: 执行飞书数据处理脚本
+        run: |
+          python feishu_bitable_process.py
+        # 捕获脚本执行错误，确保工作流能输出错误日志
+        continue-on-error: false
