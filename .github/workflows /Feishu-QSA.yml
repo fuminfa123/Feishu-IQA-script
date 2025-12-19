@@ -25,11 +25,12 @@ jobs:
           # 敏感信息通过GitHub Secrets传递
           APP_ID: ${{ secrets.FEISHU_APP_ID }}
           APP_SECRET: ${{ secrets.FEISHU_APP_SECRET }}
-          TARGET_TABLE_ID: ${{ secrets.TARGET_TABLE_ID }}
+          DWBG_TOKEN: ${{ secrets.DWBG_TOKEN }}
+          DWBG_TABLE_ID: ${{ secrets.DWBG_TABLE_ID }}
 
           # 从触发事件中读取动态参数（优先repository_dispatch的client_payload，其次workflow_dispatch的inputs）
-          DWBG_TOKEN: ${{ github.event.client_payload.DWBG_TOKEN || github.event.inputs.DWBG_TOKEN }}
-          DWBG_TABLE_ID: ${{ github.event.client_payload.DWBG_TABLE_ID || github.event.inputs.DWBG_TABLE_ID }}
+          QSA_TABLE_ID: ${{ github.event.client_payload.QSA_TABLE_ID || github.event.inputs.QSA_TABLE_ID }}
+          FJ_ID: ${{ github.event.client_payload.FJ_ID || github.event.inputs.FJ_ID }}
           ROW_ID: ${{ github.event.client_payload.ROW_ID || github.event.inputs.ROW_ID }}
           
         run: python feishu_QSA_script.py  # 执行改造后的脚本
