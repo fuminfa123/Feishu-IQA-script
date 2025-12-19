@@ -506,13 +506,13 @@ if __name__ == "__main__":
     数据字典 = {}
 
     # 从环境变量读取配置（修改为正确的环境变量名）
-    APP_ID = os.getenv("APP_ID")
-    APP_SECRET = os.getenv("APP_SECRET")
-    DWBG_TOKEN = os.getenv("DWBG_TOKEN")
-    DWBG_TABLE_ID = os.getenv("DWBG_TABLE_ID")
-    ROW_ID = os.getenv("ROW_ID")  # 修改：从 ROW_ID 读取
-    QSA_TABLE_ID = os.getenv("QSA_TABLE_ID")  # 修改：从 QSA_TABLE_ID 读取
-    FJ_ID = os.getenv("FJ_ID")  # 修改：从 FJ_ID 读取
+    APP_ID = os.getenv("APP_ID").strip()
+    APP_SECRET = os.getenv("APP_SECRET").strip()
+    DWBG_TOKEN = os.getenv("DWBG_TOKEN").strip()
+    DWBG_TABLE_ID = os.getenv("DWBG_TABLE_ID").strip()
+    ROW_ID = os.getenv("ROW_ID").strip()  # 修改：从 ROW_ID 读取
+    QSA_TABLE_ID = os.getenv("QSA_TABLE_ID").strip()  # 修改：从 QSA_TABLE_ID 读取
+    FJ_ID = os.getenv("FJ_ID").strip()  # 修改：从 FJ_ID 读取
     
     # 调试：打印环境变量值
     print("=== 环境变量调试 ===")
@@ -527,7 +527,7 @@ if __name__ == "__main__":
     # 校验配置（修改变量名）
     if not all([APP_ID, APP_SECRET, DWBG_TOKEN, DWBG_TABLE_ID, FJ_ID, ROW_ID, QSA_TABLE_ID]):
         raise Exception("❌ 环境变量配置不完整，请检查Secrets和工作流配置")
-
+    FJ_ID = str(FJ_ID).
     '''第一步先获取多维表格数据'''
     访问令牌 = 获取访问令牌(APP_ID, APP_SECRET)
     print("访问令牌", 访问令牌[:50] if 访问令牌 else "获取失败")
