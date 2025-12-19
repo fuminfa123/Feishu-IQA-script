@@ -228,7 +228,7 @@ def 获取多维表格中附件的链接(访问令牌, DWBG_TOKEN, DWBG_TABLE_ID
     :param DWBG_TOKEN: 多维表格APP_TOKEN
     :param DWBG_TABLE_ID: 多维表格TABLE_ID
     :param 行ID: 目标行的record_id（必填，精准定位行）
-    :param 附件字段名: 表格中附件列的名称（比如“上传附件”）
+    :param 附件字段名: 表格中附件列的名称（比如"上传附件"）
     :param 仅返回第一个: 是否仅返回第一个符合条件的Excel附件
     :return: 元组 (url, file_name) 或 列表[(url, name), ...]
     """
@@ -505,23 +505,35 @@ def 取表格标题(工作表内容: list, 第几行开始: int):
 if __name__ == "__main__":
     数据字典 = {}
 
-    # 从环境变量读取配置
+    # 从环境变量读取配置（修改为正确的环境变量名）
     APP_ID = os.getenv("APP_ID")
     APP_SECRET = os.getenv("APP_SECRET")
     DWBG_TOKEN = os.getenv("DWBG_TOKEN")
     DWBG_TABLE_ID = os.getenv("DWBG_TABLE_ID")
-    行ID = os.getenv("ROW_ID")
-    失分点填入_TABLE_ID = os.getenv("QSA_TABLE_ID")
-    附件字段名 = os.getenv("FJ_ID")
-        
-    # 校验配置
-    if not all([APP_ID, APP_SECRET, DWBG_TOKEN, DWBG_TABLE_ID, 附件字段名, 行ID, 失分点填入_TABLE_ID]):
+    ROW_ID = os.getenv("ROW_ID")  # 修改：从 ROW_ID 读取
+    QSA_TABLE_ID = os.getenv("QSA_TABLE_ID")  # 修改：从 QSA_TABLE_ID 读取
+    FJ_ID = os.getenv("FJ_ID")  # 修改：从 FJ_ID 读取
+    
+    # 调试：打印环境变量值
+    print("=== 环境变量调试 ===")
+    print(f"APP_ID: {APP_ID[:10] if APP_ID else '未设置'}...")
+    print(f"APP_SECRET: {'已设置' if APP_SECRET else '未设置'}")
+    print(f"DWBG_TOKEN: {DWBG_TOKEN[:10] if DWBG_TOKEN else '未设置'}...")
+    print(f"DWBG_TABLE_ID: {DWBG_TABLE_ID if DWBG_TABLE_ID else '未设置'}")
+    print(f"ROW_ID: {ROW_ID if ROW_ID else '未设置'}")
+    print(f"QSA_TABLE_ID: {QSA_TABLE_ID if QSA_TABLE_ID else '未设置'}")
+    print(f"FJ_ID: {FJ_ID if FJ_ID else '未设置'}")
+    
+    # 校验配置（修改变量名）
+    if not all([APP_ID, APP_SECRET, DWBG_TOKEN, DWBG_TABLE_ID, FJ_ID, ROW_ID, QSA_TABLE_ID]):
         raise Exception("❌ 环境变量配置不完整，请检查Secrets和工作流配置")
 
     '''第一步先获取多维表格数据'''
     访问令牌 = 获取访问令牌(APP_ID, APP_SECRET)
-    print("访问令牌",访问令牌)
-    获取信息 = 获取多维表格中附件的链接(访问令牌, DWBG_TOKEN, DWBG_TABLE_ID, 行ID, 附件字段名)
+    print("访问令牌", 访问令牌[:50] if 访问令牌 else "获取失败")
+    
+    # 修改函数调用参数（使用英文变量名）
+    获取信息 = 获取多维表格中附件的链接(访问令牌, DWBG_TOKEN, DWBG_TABLE_ID, ROW_ID, FJ_ID)
 
     数据字典 = {}
 
@@ -573,12 +585,13 @@ if __name__ == "__main__":
                                         根因分析 = 一行内容[符合级别行列列表[1] + 2]
                                         改进计划 = 一行内容[符合级别行列列表[1] + 3]
                                         计划完成期限 = 一行内容[符合级别行列列表[1] + 4]
-                                        if "QSA+" in 附件字段名:
+                                        if "QSA+" in FJ_ID:  # 修改：使用 FJ_ID
                                             审核项 = "QSA+"
                                         else:
                                             审核项 = "QSA"
                                         ''''''
-                                        取值列表 = 数据字典.setdefault(结果列表[0], {}).setdefault(结果列表[1], {}).setdefault(结果列表[2],{}).setdefault(审核项,{}).setdefault(
+                                        取值列表 = 数据字典.setdefault(结果列表[0], {}).setdefault(结果列表[1], {}).setdefault(结果列表[2],{}).setdefault(
+                                            审核项,{}).setdefault(
                                             结果列表[3], {}).setdefault(审核条款, {}).setdefault(条款标准, {}).setdefault(扣分等级,{}).setdefault(
                                             根因分析, {}).setdefault(改进计划, {}).setdefault(计划完成期限,问题描述)
                                         # for 分割元素 in str(问题描述).split("\n"):
@@ -617,7 +630,8 @@ if __name__ == "__main__":
                         ''''''
                         if 审核成绩上传数据结构:
                             #print(审核成绩上传数据结构)
-                            更新飞书表格(APP_ID, APP_SECRET, DWBG_TOKEN, DWBG_TABLE_ID, 行ID, 审核成绩上传数据结构)
+                            # 修改：使用 ROW_ID 变量
+                            更新飞书表格(APP_ID, APP_SECRET, DWBG_TOKEN, DWBG_TABLE_ID, ROW_ID, 审核成绩上传数据结构)
                             审核成绩上传数据结构 = {}
 
                         for 审核条款, 嵌入字典6 in 嵌入字典5.items():
@@ -642,4 +656,5 @@ if __name__ == "__main__":
 
                                                 if 审核失分点上传数据结构:
                                                     #print(审核失分点上传数据结构)
-                                                    新增飞书表格(APP_ID, APP_SECRET, DWBG_TOKEN, 失分点填入_TABLE_ID, 审核失分点上传数据结构)
+                                                    # 修改：使用 QSA_TABLE_ID 变量
+                                                    新增飞书表格(APP_ID, APP_SECRET, DWBG_TOKEN, QSA_TABLE_ID, 审核失分点上传数据结构)
