@@ -511,7 +511,7 @@ if __name__ == "__main__":
     DWBG_TOKEN = os.getenv("DWBG_TOKEN")
     DWBG_TABLE_ID = os.getenv("DWBG_TABLE_ID")
     行ID = os.getenv("ROW_ID")
-    失分点填入_TABLE_ID = os.getenv("TARGET_TABLE_ID")
+    失分点填入_TABLE_ID = os.getenv("QSA_TABLE_ID")
     附件字段名 = os.getenv("FJ_ID")
         
     # 校验配置
