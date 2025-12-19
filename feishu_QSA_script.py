@@ -527,7 +527,7 @@ if __name__ == "__main__":
     # 校验配置（修改变量名）
     if not all([APP_ID, APP_SECRET, DWBG_TOKEN, DWBG_TABLE_ID, FJ_ID, ROW_ID, QSA_TABLE_ID]):
         raise Exception("❌ 环境变量配置不完整，请检查Secrets和工作流配置")
-    FJ_ID = str(FJ_ID).
+    
     '''第一步先获取多维表格数据'''
     访问令牌 = 获取访问令牌(APP_ID, APP_SECRET)
     print("访问令牌", 访问令牌[:50] if 访问令牌 else "获取失败")
