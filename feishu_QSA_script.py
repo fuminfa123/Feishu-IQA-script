@@ -504,17 +504,19 @@ def 取表格标题(工作表内容: list, 第几行开始: int):
 
 if __name__ == "__main__":
     数据字典 = {}
-    APP_ID = "cli_a83ba9e2a6b2500b"  # 应用程序的ID
-    APP_SECRET = "Vxt9vWzEuHhAfcBS3ohG2eZrZtZU3GSU"  # 应用程序的密匙
 
-    DWBG_TOKEN = "DrEDbMfNOa3yCGsnIygcFHetn6g"
-    DWBG_TABLE_ID = "tblxfaR7c3jEz0Xr"
-
-    失分点填入_TABLE_ID = "tblDVQEXbXTZUciq"
-
-    附件字段名 = r"QSA审核表格"
-    附件字段名 = r"QSA+审核表格"
-    行ID = "recv5Pct3uxdWe"
+    # 从环境变量读取配置
+    APP_ID = os.getenv("APP_ID")
+    APP_SECRET = os.getenv("APP_SECRET")
+    DWBG_TOKEN = os.getenv("DWBG_TOKEN")
+    DWBG_TABLE_ID = os.getenv("DWBG_TABLE_ID")
+    行ID = os.getenv("ROW_ID")
+    失分点填入_TABLE_ID = os.getenv("TARGET_TABLE_ID")
+    附件字段名 = os.getenv("FJ_ID")
+        
+    # 校验配置
+    if not all([APP_ID, APP_SECRET, DWBG_TOKEN, DWBG_TABLE_ID, 附件字段名, 行ID, 失分点填入_TABLE_ID]):
+        raise Exception("❌ 环境变量配置不完整，请检查Secrets和工作流配置")
 
     '''第一步先获取多维表格数据'''
     访问令牌 = 获取访问令牌(APP_ID, APP_SECRET)
