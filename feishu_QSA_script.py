@@ -699,7 +699,8 @@ if __name__ == "__main__":
                                 continue
                             
                             符合等级 = str(行内容[符合级别列号]).strip()
-                            if not 符合等级 or not 符合等级.upper().startswith(("S", "P")):
+                            目标等级列表 = ["S", "s", "P", "p"]
+                            if 符合等级 not in 目标等级列表:
                                 continue
                             
                             # 提取失分点详情
