@@ -5,7 +5,7 @@ on:
 
 jobs:
   process-feishu-table:
-    runs-on: ubuntu-latest
+    runs-on: Ubuntu 26.04
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
