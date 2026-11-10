@@ -6,7 +6,7 @@ on:
 
 jobs:
   process-feishu-data:
-    runs-on: ubuntu-latest
+    runs-on: Ubuntu 26.04
     env:
       # 从GitHub Secrets读取飞书应用密钥（需提前在仓库设置）
       FEISHU_APP_ID: ${{ secrets.FEISHU_APP_ID }}
